@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年謎解き</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .container-main {
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: auto;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .card-header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .card-header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .card-body {
+            padding: 40px 30px;
+        }
+        
+        .hint-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .hint-section h3 {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .hint-section p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .result-message {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
+            animation: slideDown 0.3s ease-in-out;
+        }
+        
+        .result-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+        
+        .result-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .result-message.hidden {
+            display: none;
+        }
+        
+        .feedback-section {
+            margin-top: 25px;
+            padding: 25px;
+            background-color: #e7f3ff;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            text-align: center;
+            animation: slideDown 0.3s ease-in-out;
+        }
+        
+        .feedback-section h3 {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .feedback-section p {
+            margin: 10px 0;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .feedback-section .time-info {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 8px 0;
+        }
+        
+        .btn-feedback {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background-color: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-feedback:hover {
+            background-color: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .feedback-section.hidden {
+            display: none;
+        }
+        
+        .puzzle-image-section {
+            margin-bottom: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .puzzle-images {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .puzzle-images img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .card-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card-header p {
+                font-size: 0.95rem;
+            }
+            
+            .card-body {
+                padding: 25px 20px;
+            }
+            
+            .hint-section {
+                padding: 15px;
+            }
+            
+            .hint-section h3 {
+                font-size: 1.1rem;
+            }
+            
+            .hint-section p {
+                font-size: 0.95rem;
+            }
+        }
+        
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+        }
+        
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+        
+        footer a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        .creator-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s;
+        }
+        
+        footer a:hover .creator-icon {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-main">
+        <div class="card">
+            <div class="card-header">
+                <h1>🎉 2026年 謎解き</h1>
+                <p>答えを入力して正解を目指そう！</p>
+            </div>
+            
+            <div class="card-body">
+                <div class="puzzle-image-section">
+                    <div class="puzzle-images">
+                        <img src="images/2026-01-19_1.JPG" alt="謎解き問題画像1">
+                        <img src="images/2026-01-19_2.JPG" alt="謎解き問題画像2">
+                    </div>
+                </div>
+                
+                <div class="hint-section">
+                    <h3>📝 ヒント</h3>
+                    <p>今年は西暦2026年。新しい年を祝う言葉を考えてみてください。</p>
+                </div>
+                
+                <form id="answerForm">
+                    <div class="form-group">
+                        <label for="answerInput" class="form-label">答え:</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="answerInput" 
+                            placeholder="答えを入力してください"
+                            autocomplete="off"
+                        >
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">送信</button>
+                </form>
+                
+                <div id="resultMessage" class="result-message hidden"></div>
+                
+                <div id="feedbackSection" class="feedback-section hidden">
+                    <h3>🎉 正解おめでとうございます！</h3>
+                    <p>ご協力いただけましたら幸いです。</p>
+                    <p class="time-info">⏱️ 所要時間：約30秒</p>
+                    <a id="feedbackLink" href="#" target="_blank" class="btn-feedback">感想フォームに回答する</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>👍 製作者: <a href="https://x.com/AmayaSoya" target="_blank"><img src="images/amaya_icon.PNG" alt="アマヤのアイコン" class="creator-icon">アマヤ (@AmayaSoya)</a></p>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 正解の答え
+        const CORRECT_ANSWER = "2026年おめでとう";
+        
+        // フォーム送信イベント
+        document.getElementById('answerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 入力値を取得（前後の空白を削除）
+            const userAnswer = document.getElementById('answerInput').value.trim();
+            
+            // 結果メッセージ要素を取得
+            const resultMessage = document.getElementById('resultMessage');
+            
+            // 答えを判定
+            if (userAnswer === CORRECT_ANSWER) {
+                // 正解
+                resultMessage.textContent = '正解！2026年明けましておめでとうございます！';
+                resultMessage.classList.remove('error', 'hidden');
+                resultMessage.classList.add('success');
+                
+                // 感想フォームセクションを表示
+                const feedbackSection = document.getElementById('feedbackSection');
+                feedbackSection.classList.remove('hidden');
+                
+                // フォームURLを設定
+                document.getElementById('feedbackLink').href = 'https://forms.gle/AeJH79pt9eivpCir6';
+                
+                // 入力フィールドをリセット
+                document.getElementById('answerInput').value = '';
+            } else if (userAnswer === '2028年おめでとう') {
+                // ネタ回答
+                resultMessage.textContent = 'まだ2028年をお祝いするのは早いよ';
+                resultMessage.classList.remove('success', 'hidden');
+                resultMessage.classList.add('error');
+            } else if (userAnswer === '') {
+                // 空入力
+                resultMessage.textContent = '答えを入力してください';
+                resultMessage.classList.remove('success', 'hidden');
+                resultMessage.classList.add('error');
+            } else {
+                // 不正解
+                resultMessage.textContent = '不正解';
+                resultMessage.classList.remove('success', 'hidden');
+                resultMessage.classList.add('error');
+            }
+        });
+        
+        // Enterキーで送信可能にする（フォーム内なので自動）
+    </script>
+</body>
+</html>
