@@ -230,6 +230,74 @@
             }
         }
         
+        @keyframes celebration {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes rainbow {
+            0% {
+                color: #ff0000;
+            }
+            20% {
+                color: #ff7f00;
+            }
+            40% {
+                color: #ffff00;
+            }
+            60% {
+                color: #00ff00;
+            }
+            80% {
+                color: #0000ff;
+            }
+            100% {
+                color: #ff0000;
+            }
+        }
+        
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .result-message.success.celebrating {
+            animation: celebration 0.8s ease-out, pulse 1s ease-in-out 0.8s 2;
+            background: linear-gradient(135deg, #d4edda 0%, #a8e6c5 100%);
+            box-shadow: 0 0 30px rgba(40, 167, 69, 0.6);
+            font-size: 1.4rem;
+        }
+        
+        .confetti-item {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.5rem;
+        }
+        
         @media (max-width: 576px) {
             .card-header h1 {
                 font-size: 1.5rem;
@@ -292,14 +360,139 @@
         footer a:hover .creator-icon {
             transform: scale(1.1);
         }
+        
+        .accordion-hints {
+            margin-bottom: 30px;
+        }
+        
+        .question-section {
+            margin-bottom: 30px;
+        }
+        
+        .question-section h3 {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .hint-item {
+            background-color: #fff9e6;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .hint-toggle {
+            width: 100%;
+            padding: 15px;
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .hint-toggle:hover {
+            background-color: #ffb700;
+        }
+        
+        .hint-toggle .toggle-icon {
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        
+        .hint-toggle.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+        
+        .hint-content {
+            display: none;
+            padding: 20px;
+            background-color: #fff9e6;
+        }
+        
+        .hint-content.show {
+            display: block;
+            animation: slideDown 0.3s ease-in-out;
+        }
+        
+        .hint-content ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .hint-content li {
+            margin-bottom: 10px;
+            color: #333;
+            line-height: 1.5;
+        }
+        
+        .hint-answer {
+            margin-top: 15px;
+            padding-top: 15px;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+        
+        .btn-next-hint {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+        }
+        
+        .btn-next-hint:hover {
+            background-color: #764ba2;
+            transform: translateY(-2px);
+        }
+        
+        .btn-show-answer {
+            margin-top: 15px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn-show-answer:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(135deg, #ff5252 0%, #dd3b3b 100%);
+        }
+        
+        .hint-item.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container-main">
         <div class="card">
             <div class="card-header">
-                <h1>🎉 2026年 謎解き</h1>
-                <p>答えを入力して正解を目指そう！</p>
+                <h1>🎉 2026年 新年謎解き</h1>
+                <p>謎を解いて答えを入力しよう！</p>
             </div>
             
             <div class="card-body">
@@ -307,6 +500,53 @@
                     <div class="puzzle-images">
                         <img src="images/2026-01-19_1.JPG" alt="謎解き問題画像1">
                         <img src="images/2026-01-19_2.JPG" alt="謎解き問題画像2">
+                    </div>
+                </div>
+                
+                <div class="accordion-hints">
+                    <!-- Question 1: Caterpillar (5-letter animal) -->
+                    <div class="question-section" id="q1-section">
+                        <h3>1）〇〇〇〇〇（生き物5文字）のヒント</h3>
+                        
+                        <div class="hint-item">
+                            <button class="hint-toggle" data-question="1" data-hint="1">
+                                <span>ヒント1</span>
+                                <span class="toggle-icon">▼</span>
+                            </button>
+                            <div class="hint-content">
+                                <p>こたつに隠れている文字を考えてみましょう</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 2: Year (△△△△) -->
+                    <div class="question-section" id="q2-section">
+                        <h3>2）△△△△のヒント</h3>
+                        
+                        <div class="hint-item">
+                            <button class="hint-toggle" data-question="2" data-hint="1">
+                                <span>ヒント1</span>
+                                <span class="toggle-icon">▼</span>
+                            </button>
+                            <div class="hint-content">
+                                <p>20△△年です。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3: New Year words (□) -->
+                    <div class="question-section" id="q3-section">
+                        <h3>3）□のヒント</h3>
+                        
+                        <div class="hint-item">
+                            <button class="hint-toggle" data-question="3" data-hint="1">
+                                <span>ヒント1</span>
+                                <span class="toggle-icon">▼</span>
+                            </button>
+                            <div class="hint-content">
+                                <p>□が横に3つ繋がっているところには［3文字］のひらがなが入ります。</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -329,7 +569,7 @@
                 
                 <div id="feedbackSection" class="feedback-section hidden">
                     <h3>🎉 正解おめでとうございます！</h3>
-                    <p>ご協力いただけましたら幸いです。</p>
+                    <p>感想フォームにご回答いただけましたら幸いです。</p>
                     <p class="time-info">⏱️ 所要時間：約30秒</p>
                     <a id="feedbackLink" href="#" target="_blank" class="btn-feedback">感想フォームに回答する</a>
                 </div>
@@ -338,61 +578,313 @@
     </div>
     
     <footer>
-        <p>👍 製作者: <a href="https://x.com/AmayaSoya" target="_blank"><img src="images/amaya_icon.PNG" alt="アマヤのアイコン" class="creator-icon">アマヤ (@AmayaSoya)</a></p>
+        <p>制作者: <a href="https://x.com/AmayaSoya" target="_blank"><img src="images/amaya_icon.PNG" alt="アマヤのアイコン" class="creator-icon">アマヤ (@AmayaSoya)</a></p>
     </footer>
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // 正解の答え
-        const CORRECT_ANSWER = "2026年おめでとう";
+        // Hint data for each question
+        const hintsData = {
+            1: [
+                'こたつに隠れている文字を考えてみましょう',
+                '①のこたつには、「か」が隠れています',
+                '②のこたつには干支が隠れています',
+                '③のこたつには、「たつ」が隠れています',
+                '④のこたつの上には白湯が置かれています',
+                '「ゆけむり」の「むり」がこたつに隠れています'
+            ],
+            2: [
+                '20△△年です。',
+                '干支で時刻を表す時、午（うま）は「12」時に対応します。「12」と「2030」の関連を考えてみましょう。',
+                '②のこたつは「8」時に対応します。',
+                '兎のイラスト=2024年です。',
+                'R12=2030年、R6=2024年です。',
+                '令和12年=2030年です。'
+            ],
+            3: [
+                '□が横に3つ繋がっているところには［3文字］のひらがなが入ります。',
+                '［3文字］のワードは「おせち」です。',
+                '［4文字］のワードの一つ目は「かきぞめ」です。',
+                '［4文字］のワードの二つ目は「えきでん」です。',
+                '［5文字］のワードは「おとしだま」です。',
+                '［6文字］のワードは「ねんがじょう」です。',
+                '〇〇〇〇〇（生き物5文字）を〇〇〇〇〇〇（生き物6文字）に言い換えてみましょう。',
+                '〇〇〇〇〇〇に入るのは「でんでんむし」です。',
+                '赤矢印の先を読みましょう。'
+            ]
+        };
         
-        // フォーム送信イベント
+        const answers = {
+            1: 'かたつむり',
+            2: '2023',
+            3: 'おめでとう'
+        };
+        
+        // Create hint element with expanded state option
+        function createHintHTML(question, hintNum, isExpanded = false) {
+            const hintItem = document.createElement('div');
+            hintItem.className = 'hint-item';
+            hintItem.setAttribute('data-question', question);
+            hintItem.setAttribute('data-hint', hintNum);
+            
+            const button = document.createElement('button');
+            button.className = 'hint-toggle';
+            if (isExpanded) {
+                button.classList.add('expanded');
+            }
+            button.setAttribute('data-question', question);
+            button.setAttribute('data-hint', hintNum);
+            button.innerHTML = `<span>ヒント${hintNum}</span><span class="toggle-icon">▼</span>`;
+            
+            const content = document.createElement('div');
+            content.className = 'hint-content';
+            if (isExpanded) {
+                content.classList.add('show');
+            }
+            content.innerHTML = `<p>${hintsData[question][hintNum - 1]}</p>`;
+            
+            hintItem.appendChild(button);
+            hintItem.appendChild(content);
+            
+            // Add event listener
+            button.addEventListener('click', handleHintToggle);
+            
+            // If expanded, add the next/answer buttons immediately
+            if (isExpanded) {
+                const maxHints = hintsData[question].length;
+                
+                if (hintNum < maxHints) {
+                    const nextBtn = document.createElement('button');
+                    nextBtn.type = 'button';
+                    nextBtn.className = 'btn-next-hint';
+                    nextBtn.textContent = '次のヒントを見る';
+                    
+                    nextBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const section = document.getElementById(`q${question}-section`);
+                        
+                        let nextHintToggle = section.querySelector(`[data-question="${question}"][data-hint="${hintNum + 1}"].hint-toggle`);
+                        
+                        if (!nextHintToggle) {
+                            const { hintItem, button: newButton } = createHintHTML(question, hintNum + 1, true);
+                            section.appendChild(hintItem);
+                        }
+                        
+                        nextBtn.remove();
+                    });
+                    
+                    content.appendChild(nextBtn);
+                } else if (hintNum === maxHints) {
+                    const answerBtn = document.createElement('button');
+                    answerBtn.type = 'button';
+                    answerBtn.className = 'btn-show-answer';
+                    answerBtn.textContent = '💡 答えを見る';
+                    
+                    answerBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const section = document.getElementById(`q${question}-section`);
+                        
+                        // Check if answer hint already exists
+                        let answerHintExists = section.querySelector(`[data-question="${question}"][data-hint="answer"].hint-toggle`);
+                        
+                        if (!answerHintExists) {
+                            // Create answer hint element with expanded state
+                            const answerHintItem = document.createElement('div');
+                            answerHintItem.className = 'hint-item';
+                            answerHintItem.setAttribute('data-question', question);
+                            answerHintItem.setAttribute('data-hint', 'answer');
+                            
+                            const answerButton = document.createElement('button');
+                            answerButton.className = 'hint-toggle expanded';
+                            answerButton.setAttribute('data-question', question);
+                            answerButton.setAttribute('data-hint', 'answer');
+                            answerButton.innerHTML = `<span>💡 答え</span><span class="toggle-icon">▼</span>`;
+                            answerButton.addEventListener('click', handleHintToggle);
+                            
+                            const answerContent = document.createElement('div');
+                            answerContent.className = 'hint-content show';
+                            answerContent.innerHTML = `<p class="hint-answer"><strong>答え：${answers[question]}</strong></p>`;
+                            
+                            answerHintItem.appendChild(answerButton);
+                            answerHintItem.appendChild(answerContent);
+                            
+                            section.appendChild(answerHintItem);
+                        }
+                        
+                        answerBtn.remove();
+                    });
+                    
+                    content.appendChild(answerBtn);
+                }
+            }
+            
+            return { hintItem, button, content };
+        }
+        
+        // Handle hint toggle
+        function handleHintToggle(e) {
+            const button = this;
+            const question = button.getAttribute('data-question');
+            const hintNum = parseInt(button.getAttribute('data-hint'));
+            const content = button.nextElementSibling;
+            const isExpanded = button.classList.contains('expanded');
+            
+            console.log(`Hint ${hintNum} clicked, expanded: ${isExpanded}`);
+            
+            if (isExpanded) {
+                button.classList.remove('expanded');
+                content.classList.remove('show');
+            } else {
+                button.classList.add('expanded');
+                content.classList.add('show');
+                
+                const maxHints = hintsData[question].length;
+                
+                // Add next hint button if this is not the last hint and button doesn't exist
+                if (hintNum < maxHints && !content.querySelector('.btn-next-hint')) {
+                    console.log(`Creating next hint button for hint ${hintNum}`);
+                    const nextBtn = document.createElement('button');
+                    nextBtn.type = 'button';
+                    nextBtn.className = 'btn-next-hint';
+                    nextBtn.textContent = '次のヒントを見る';
+                    
+                    nextBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        console.log(`Next hint button clicked for hint ${hintNum}`);
+                        const section = document.getElementById(`q${question}-section`);
+                        
+                        // Check if next hint already exists
+                        let nextHintToggle = section.querySelector(`[data-question="${question}"][data-hint="${hintNum + 1}"].hint-toggle`);
+                        
+                        if (!nextHintToggle) {
+                            // Create and insert next hint in expanded state
+                            console.log(`Creating hint ${hintNum + 1}`);
+                            const { hintItem, button: newButton, content: newContent } = createHintHTML(question, hintNum + 1, true);
+                            section.appendChild(hintItem);
+                            nextHintToggle = newButton;
+                        }
+                        
+                        // Remove the next button
+                        nextBtn.remove();
+                    });
+                    
+                    content.appendChild(nextBtn);
+                } else if (hintNum === maxHints && !content.querySelector('.btn-show-answer')) {
+                    // Last hint - show "show answer" button
+                    console.log(`Creating answer button for hint ${maxHints}`);
+                    if (!content.querySelector('.hint-answer')) {
+                        const answerBtn = document.createElement('button');
+                        answerBtn.type = 'button';
+                        answerBtn.className = 'btn-show-answer';
+                        answerBtn.textContent = '💡 答えを見る';
+                        
+                        answerBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const section = document.getElementById(`q${question}-section`);
+                            
+                            // Check if answer hint already exists
+                            let answerHintExists = section.querySelector(`[data-question="${question}"][data-hint="answer"].hint-toggle`);
+                            
+                            if (!answerHintExists) {
+                                // Create answer hint element with expanded state
+                                const answerHintItem = document.createElement('div');
+                                answerHintItem.className = 'hint-item';
+                                answerHintItem.setAttribute('data-question', question);
+                                answerHintItem.setAttribute('data-hint', 'answer');
+                                
+                                const answerButton = document.createElement('button');
+                                answerButton.className = 'hint-toggle expanded';
+                                answerButton.setAttribute('data-question', question);
+                                answerButton.setAttribute('data-hint', 'answer');
+                                answerButton.innerHTML = `<span>💡 答え</span><span class="toggle-icon">▼</span>`;
+                                answerButton.addEventListener('click', handleHintToggle);
+                                
+                                const answerContent = document.createElement('div');
+                                answerContent.className = 'hint-content show';
+                                answerContent.innerHTML = `<p class="hint-answer"><strong>答え：${answers[question]}</strong></p>`;
+                                
+                                answerHintItem.appendChild(answerButton);
+                                answerHintItem.appendChild(answerContent);
+                                
+                                section.appendChild(answerHintItem);
+                            }
+                            
+                            answerBtn.remove();
+                        });
+                        
+                        content.appendChild(answerBtn);
+                    }
+                }
+            }
+        }
+        
+        // Initialize hint 1 toggles
+        document.querySelectorAll('.hint-toggle').forEach(button => {
+            button.addEventListener('click', handleHintToggle);
+        });
+        
+        // Form functionality
+        const CORRECT_ANSWER = "2026年おめでとう";
+        const CORRECT_ANSWERS = ["2026年おめでとう", "2026おめでとう"];
+        
         document.getElementById('answerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // 入力値を取得（前後の空白を削除）
             const userAnswer = document.getElementById('answerInput').value.trim();
-            
-            // 結果メッセージ要素を取得
             const resultMessage = document.getElementById('resultMessage');
             
-            // 答えを判定
-            if (userAnswer === CORRECT_ANSWER) {
-                // 正解
-                resultMessage.textContent = '正解！2026年明けましておめでとうございます！';
+            if (CORRECT_ANSWERS.includes(userAnswer)) {
+                // 派手な正解演出
+                resultMessage.innerHTML = '🎉 正解！2026年明けましておめでとうございます！ 🎉';
                 resultMessage.classList.remove('error', 'hidden');
-                resultMessage.classList.add('success');
+                resultMessage.classList.add('success', 'celebrating');
                 
-                // 感想フォームセクションを表示
+                // 紙吹雪アニメーション
+                createConfetti();
+                
                 const feedbackSection = document.getElementById('feedbackSection');
                 feedbackSection.classList.remove('hidden');
                 
-                // フォームURLを設定
                 document.getElementById('feedbackLink').href = 'https://forms.gle/AeJH79pt9eivpCir6';
-                
-                // 入力フィールドをリセット
                 document.getElementById('answerInput').value = '';
             } else if (userAnswer === '2028年おめでとう') {
-                // ネタ回答
                 resultMessage.textContent = 'まだ2028年をお祝いするのは早いよ';
-                resultMessage.classList.remove('success', 'hidden');
+                resultMessage.classList.remove('success', 'hidden', 'celebrating');
                 resultMessage.classList.add('error');
             } else if (userAnswer === '') {
-                // 空入力
                 resultMessage.textContent = '答えを入力してください';
-                resultMessage.classList.remove('success', 'hidden');
+                resultMessage.classList.remove('success', 'hidden', 'celebrating');
                 resultMessage.classList.add('error');
             } else {
-                // 不正解
                 resultMessage.textContent = '不正解';
-                resultMessage.classList.remove('success', 'hidden');
+                resultMessage.classList.remove('success', 'hidden', 'celebrating');
                 resultMessage.classList.add('error');
             }
         });
         
-        // Enterキーで送信可能にする（フォーム内なので自動）
+        // 紙吹雪生成関数
+        function createConfetti() {
+            const confettiEmojis = ['🎉', '🎊', '✨', '🌟', '⭐', '🎈', '🎁'];
+            
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-item';
+                confetti.textContent = confettiEmojis[Math.floor(Math.random() * confettiEmojis.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-20px';
+                confetti.style.animation = `confetti ${2 + Math.random()}s ease-in forwards`;
+                confetti.style.delay = Math.random() * 0.5 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                // アニメーション終了後に削除
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
     </script>
 </body>
 </html>
